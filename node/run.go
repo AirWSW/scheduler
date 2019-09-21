@@ -17,7 +17,9 @@ import (
 	// "github.com/AirWSW/scheduler/config"
 )
 
-func (n *Node) RunTCPServer() error {
+// RunTCPServer runs a server to listen tcp request
+func (n *Node) RunTCPServer(masterCh chan Requset) error {
+	log.Debug("Run TCP Server...")
 	ln, err := net.Listen("tcp", fmt.Sprintf("%s:%d", n.Server.Address, n.Server.Port))
 	if err != nil {
 		return err
@@ -29,26 +31,32 @@ func (n *Node) RunTCPServer() error {
 			// if _, ok := err.(net.Error); ok {
 			// 	fmt.Println("Error received while listening.", me.NodeId)
 			// }
+			log.Error(err)
 		} else {
-			var req requset
+			// Receive any tcp request from ADDRESS:PORT
+			var req Requset
 			if err := json.NewDecoder(connIn).Decode(&req); err != nil {
+				// Throw out invalid requset
 				log.Error(err)
-				// return err
-			}
-			log.Debugf("Got request message: %s", req.String())
+			} else {
+				// Throw out invalid requset
+				log.Debugf("Got request message: %s", req.String())
 
-			resp := response{
-				ID: "123456",
-				Name: "123456",
-				Type: "responseType",
-				Massage: "responseMessage",
+				masterCh <- req
+				// Do something
+			
+				resp := response{
+					ID: req.ID,
+					Name: req.Name,
+					Type: req.Type,
+					Massage: "OK",
+				}
+				if json.NewEncoder(connIn).Encode(&resp); err != nil {
+					log.Error(err)
+				} else {
+					log.Debugf("Send response message: %s", resp.String())
+				}
 			}
-			if json.NewEncoder(connIn).Encode(&resp); err != nil {
-				log.Error(err)
-				// return err
-			}
-			log.Debugf("Send response message: %s", resp.String())
-
 			connIn.Close()
 		}
 	}

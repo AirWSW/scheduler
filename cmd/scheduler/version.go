@@ -17,7 +17,7 @@ const (
 id    = "node_id1"
 name  = "master1"
 role  = "master-slave"
-debug = true
+debug = false
 
 [node.master]
 hostname = "master"
@@ -35,34 +35,35 @@ refresh_token  = "refresh_token"
 register_token = "register_token"
 
 [[schedule]]
-id      = "plan_id1"
-name    = "plan1"
-node_id = "node_id1"
-status  = "enabled"
+id       = "plan_id1"
+name     = "plan1"
+node_id  = "node_id1"
+interval = 10
+status   = "enabled"
 	[schedule.task]
 	id     = "task_id1"
 	name   = "task1"
 	status = "enabled"
 
 [[schedule]]
-id      = "plan_id2"
-name    = "plan2"
-node_id = "node_id1"
-status  = "enabled"
+id       = "plan_id2"
+name     = "plan2"
+node_id  = "node_id1"
+interval = 10
+status   = "enabled"
 	[schedule.task]
 	id     = "task_id2"
 	name   = "task2"
 	status = "enabled"
-	
-[[tasks]]
-id     = "task_id1"
-name   = "task1"
-status = "enabled"
-
-[[tasks]]
-id     = "task_id2"
-name   = "task2"
-status = "enabled"
 `
+// [[tasks]]
+// id     = "task_id1"
+// name   = "task1"
+// status = "enabled"
+
+// [[tasks]]
+// id     = "task_id2"
+// name   = "task2"
+// status = "enabled"
 )
 

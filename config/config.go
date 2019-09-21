@@ -47,10 +47,11 @@ type tokenConfig struct {
 }
 
 type planConfig struct {
-	ID       string     `toml:"id"`
-	Name     string     `toml:"name"`
-	NodeID   string     `toml:"node_id"`
-
+	ID       string `toml:"id"`
+	Name     string `toml:"name"`
+	NodeID   string `toml:"node_id"`
+	Interval int    `toml:"interval"`
+	
 	Task     taskConfig `toml:"task"`
 
 	Status   string     `toml:"status"`

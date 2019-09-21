@@ -1,11 +1,11 @@
 package node
 
 import (
-	"fmt"
+	// "fmt"
 	// "strconv"
-	"time"
+	// "time"
 	// "math/rand"
-	"net"
+	// "net"
 	// "net/http"
 	// "flag"
 	// "strings"
@@ -38,8 +38,31 @@ func (r *response) String() string {
 	return string(bytes)
 }
 
+// func (n *Node) Response(responseType string, responseMessage string) (error){
+// 	HERE:
+// 	connOut, err := net.DialTimeout(
+// 		"tcp", 
+// 		fmt.Sprintf("%s:%d", n.Master.Address, n.Master.Port),
+// 		time.Duration(10) * time.Second,
+// 	)
+// 	if err != nil {
+// 		log.Error(err)
+// 		goto HERE
+// 		return err
+// 	} else {
+// 		var resp response
+// 		if err := json.NewDecoder(connOut).Decode(&resp); err != nil {
+// 			log.Error(err)
+// 			// return err
+// 		}
+// 		log.Debugf("Got response message: %s", resp.String())
+
+// 		return nil
+// 	}
+// }
+
 func (n *Node) RegisterResponse() (string, error) {
-	n.Request("RegisterToCluster", "RegisterRequest")
+	n.SendRequest("RegisterToCluster", "RegisterRequest")
 	bytes, err := n.Marshal()
 	return string(bytes), err
 }

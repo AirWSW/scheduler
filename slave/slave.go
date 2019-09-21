@@ -46,11 +46,24 @@ func (s *Slave) String() string {
 	return string(bytes)
 }
 
+// Marshal returns the JSON encoding of a node info.
+func (t *Task) Marshal() ([]byte, error) {
+	return json.Marshal(t)
+}
+
+func (t *Task) String() string {
+	bytes, err := t.Marshal()
+	if err != nil {
+		return string(bytes)
+	}
+	return string(bytes)
+}
+
 func (s *Slave) Run() error {
 	log.Debug("Run As Slave Only")
-	if err := s.Node.RunTCPServer(); err != nil {
-		return err
-	}
+	// if err := s.Node.RunTCPServer(); err != nil {
+	// 	return err
+	// }
 	s.Node.RegisterRequest()
 	return nil
 }

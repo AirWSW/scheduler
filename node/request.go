@@ -17,7 +17,7 @@ import (
 	// "github.com/AirWSW/scheduler/config"
 )
 
-type requset struct {
+type Requset struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
 	Type string `json:"type"`
@@ -27,11 +27,11 @@ type requset struct {
 }
 
 // Marshal returns the JSON encoding of a node info.
-func (r *requset) Marshal() ([]byte, error) {
+func (r *Requset) Marshal() ([]byte, error) {
 	return json.Marshal(r)
 }
 
-func (r *requset) String() string {
+func (r *Requset) String() string {
 	bytes, err := r.Marshal()
 	if err != nil {
 		return string(bytes)
@@ -39,7 +39,7 @@ func (r *requset) String() string {
 	return string(bytes)
 }
 
-func (n *Node) Request(requestType string, requestMessage string) (error){
+func (n *Node) SendRequest(requestType string, requestMessage string) (error){
 	HERE:
 	connOut, err := net.DialTimeout(
 		"tcp", 
@@ -51,8 +51,8 @@ func (n *Node) Request(requestType string, requestMessage string) (error){
 		goto HERE
 		return err
 	} else {
-		req := requset{
-			ID: "123456",
+		req := Requset{
+			ID: "abcd123456",
 			Name: "123456",
 			Type: requestType,
 			Node: Node{
@@ -98,7 +98,7 @@ func (n *Node) Request(requestType string, requestMessage string) (error){
 }
 
 func (n *Node) RegisterRequest() (string, error) {
-	n.Request("RegisterToCluster", "RegisterRequest")
+	n.SendRequest("RegisterToCluster", "RegisterRequest")
 	bytes, err := n.Marshal()
 	return string(bytes), err
 }
@@ -114,6 +114,19 @@ func (n *Node) UpdateRequest() (string, error) {
 }
 
 func (n *Node) DelistRequest() (string, error) {
+	n.SendRequest("DelistFromCluster", "DelistRequest")
+	bytes, err := n.Marshal()
+	return string(bytes), err
+}
+
+func (n *Node) AddTaskRequest(message string) (string, error) {
+	n.SendRequest("AddTaskToNode", message)
+	bytes, err := n.Marshal()
+	return string(bytes), err
+}
+
+func (n *Node) UpdateTaskRequest(message string) (string, error) {
+	n.SendRequest("UpdateTaskInfo", message)
 	bytes, err := n.Marshal()
 	return string(bytes), err
 }
