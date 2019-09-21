@@ -12,6 +12,7 @@
 *.out
 
 # Others
+.vscode
 *_bin
 *.tmp
 *.tmp.*
