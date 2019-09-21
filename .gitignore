@@ -13,4 +13,5 @@
 
 # Others
 *_bin
-*.go.tmp
+*.tmp
+*.tmp.*
